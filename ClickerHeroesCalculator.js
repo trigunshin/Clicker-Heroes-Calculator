@@ -1360,7 +1360,16 @@ function graph() {
                 ["Aphrodite", heroData[22]["currentDPS"]],
                 ["Shinatobe", heroData[23]["currentDPS"]],
                 ["Grant", heroData[24]["currentDPS"]],
-                ["Frostleaf", heroData[25]["currentDPS"]]
+                ["Frostleaf", heroData[25]["currentDPS"]],
+                ["Dread Knight", heroData[26]["currentDPS"]],
+                ["Atlas", heroData[27]["currentDPS"]],
+                ["Terra", heroData[28]["currentDPS"]],
+                ["Phthalo", heroData[29]["currentDPS"]],
+                ["Orntchya Gladeye, Didensy Banana", heroData[30]["currentDPS"]],
+                ["Lilin", heroData[31]["currentDPS"]],
+                ["Cadmia", heroData[32]["currentDPS"]],
+                ["Alabaster", heroData[33]["currentDPS"]],
+                ["Astraea", heroData[34]["currentDPS"]]
             ]);
             var options = {
                 title: 'Pie Chart of Hero DPS',
