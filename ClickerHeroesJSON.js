@@ -7505,6 +7505,71 @@ chdata =
             "heroId": 31,
             "isPercentage": 1,
             "heroLevelRequired": 100
+        },
+        // lilin upgrades
+        "158": {
+            "displayOrder": 143,
+            "upgradeFunction": "upgradeHeroPercent",
+            "name": "Heart Juice",
+            "upgradeParams": "32, 100",
+            "amount": 100,
+            "description": "\"It's a really cold book. Don't touch it, because it will freeze your hand off,\" Frostleaf explains.",
+            "attribute": 2,
+            "cost": 1e116,
+            "id": 158,
+            "upgradeRequired": 0,
+            "iconId": 48,
+            "heroId": 32,
+            "isPercentage": 1,
+            "heroLevelRequired": 10
+        },
+        "159": {
+            "displayOrder": 144,
+            "upgradeFunction": "upgradeHeroPercent",
+            "name": "Luscious Lips",
+            "upgradeParams": "32, 100",
+            "amount": 100,
+            "description": "\"It's a really cold book. Don't touch it, because it will freeze your hand off,\" Frostleaf explains.",
+            "attribute": 2,
+            "cost": 25e115,
+            "id": 159,
+            "upgradeRequired": 158,
+            "iconId": 48,
+            "heroId": 32,
+            "isPercentage": 1,
+            "heroLevelRequired": 25
+        },
+        "160": {
+            "displayOrder": 145,
+            "upgradeFunction": "upgradeHeroPercent",
+            "name": "Lovers' Quarrel",
+            "upgradeParams": "32, 100",
+            "amount": 100,
+            "description": "\"It's a really cold book. Don't touch it, because it will freeze your hand off,\" Frostleaf explains.",
+            "attribute": 2,
+            "cost": 1e117,
+            "id": 160,
+            "upgradeRequired": 159,
+            "iconId": 48,
+            "heroId": 32,
+            "isPercentage": 1,
+            "heroLevelRequired": 50
+        },
+        "161": {
+            "displayOrder": 146,
+            "upgradeFunction": "upgradeHeroPercent",
+            "name": "Love at First Sight",
+            "upgradeParams": "32, 150",
+            "amount": 150,
+            "description": "\"It's a really cold book. Don't touch it, because it will freeze your hand off,\" Frostleaf explains.",
+            "attribute": 2,
+            "cost": 8e117,
+            "id": 161,
+            "upgradeRequired": 160,
+            "iconId": 48,
+            "heroId": 32,
+            "isPercentage": 1,
+            "heroLevelRequired": 100
         }
     }
 };
