@@ -99,7 +99,14 @@ function logBase(b, n) {
 }
 
 function calculateBaseDPS(cost, id) {	//The base DPS for a hero is calculated by a formula of the cost and its ID. ID for Cid is 1, ID for Treebeast is 2 and so on.
-    return Math.ceil((cost / 10) * Math.pow(1 - (0.0188 * Math.min(id, 14)), id));
+    //(BaseCost/10)*(1-0.0188*min(N,14))^N
+    var base_dps = (cost / 10) * Math.pow(1 - (0.0188 * Math.min(id, 14)), id);
+    // check rangers
+    if(id > 26) {
+        // 5*10^(-2*N+50)
+        base_dps = base_dps * (5 * Math.pow(10, (-2*id+50)));
+    }
+    return Math.ceil(base_dps);
 }
 
 function calculateUpgradeCost(level, heroID) { //Will find cost of upgrade given the level needed for it and the Hero's ID
@@ -326,24 +333,54 @@ function calculateNextDPSChange(heroID, level) {
     }
 }
 
+// calculate misc dmg?
+function misc_hero_dmg(hero_data) {
+    if (hero_data.level >= 200) {
+        return Math.pow(10, 3) * Math.pow(4, 144);
+    } else {
+        return 1;
+    }
+}
+// non-cid, non-ranger heroes (id 2-25)
+function normal_heroes_dmg(hero_data) {
+    var hero_level = hero_data.level;
+    if(hero_level < 200) return 1;
+
+    var thousand_multiplier = Math.min(3, Math.floor(hero_level/1000)); // 3 is current 10x cap
+    var normal_multiplier = Math.floor(1 + ((hero_level - 200) / 25)) - thousand_multiplier;
+    normal_multiplier = Math.min(normal_multiplier, 154); // (4100 - 175 - 75) / 25 is current 4x cap
+
+    return Math.pow(4, normal_multiplier) * Math.pow(10, thousand_multiplier);
+}
+// non-cid, non-normal heroes (id 25-34)
+function ranger_heroes_dmg(hero_data) {
+    var hero_level = hero_data.level;
+    if(hero_level < 200) return 1;
+
+    var thousand_multiplier = Math.min(3, Math.floor(hero_level/1000)); // 3 is current 10x cap
+    var mid_multiplier = Math.min((hero_level - 525) / 25, 9); // 9 is current 5x cap
+
+    // divide by 25 then remove the higher multipliers
+    var normal_multiplier = Math.floor(1 + ((hero_level - 200) / 25)) - thousand_multiplier - mid_multiplier;
+    normal_multiplier = Math.min(normal_multiplier, 145); // (4100 - 175 - 75) / 25 is current 4x cap
+
+    return Math.pow(4, normal_multiplier) * Math.pow(5, mid_multiplier) * Math.pow(10, thousand_multiplier);
+}
+function multiplier_for_hero(hero_data) {
+    if(hero_data.id == 1)
+        return misc_hero_dmg(hero_data);
+    else if(26 >= hero_data.id && hero_data.id > 1)
+        return normal_heroes_dmg(hero_data);
+    else if(35 >= hero_data.id && hero_data.id > 26)
+        return ranger_heroes_dmg(hero_data);
+    else
+        return 1;
+}
+
 function calculateHeroData() { //Calculates levelMultiplier, nextCost, currentDPS and nextDPSChange for the heroes
     for (var i = 0; i < heroKeys.length; i++) {
         //Calculate levelMultiplier
-        if (heroData[i]["level"] >= 200 && heroData[i]["id"] != 1 && heroData[i]["level"] < 4000) {
-            var thousandCount = 0;
-            var multiCount = Math.floor(1 + ((heroData[i]["level"] - 200) / 25));
-            if (heroData[i]["level"] >= 1000) {
-                thousandCount = Math.floor(heroData[i]["level"] / 1000);
-            }
-            heroData[i]["levelMultiplier"] = Math.pow(4, multiCount - thousandCount) * Math.pow(10, thousandCount);
-        } else if (heroData[i]["level"] >= 200 && heroData[i]["id"] != 1 && heroData[i]["level"] < 4100) {
-            var multiCount = Math.ceil((4100 - heroData[i]["level"]) / 25);
-            heroData[i]["levelMultiplier"] = Math.pow(10, 3) * Math.pow(4, 140 + multiCount);
-        } else if (heroData[i]["level"] >= 200) {
-            heroData[i]["levelMultiplier"] = Math.pow(10, 3) * Math.pow(4, 144);
-        } else {
-            heroData[i]["levelMultiplier"] = 1;
-        }
+        heroData[i]["levelMultiplier"] = multiplier_for_hero(heroData[i]);
         //Calculate nextCost
         heroData[i]["nextCost"] = calculateLevelUpCost(i, heroData[i]["level"]);
     }
