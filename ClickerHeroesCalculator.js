@@ -709,7 +709,7 @@ function calculateAllEfficiencies() {
         }
         updateEfficiencyData();
         if (efficiencyData[1][1] == Infinity) {
-            console.log(effMult);
+            //console.log(effMult);
             effMult = effMult * 0.005;
         } else {
             infLoop = false;
